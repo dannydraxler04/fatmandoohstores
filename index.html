@@ -7,11 +7,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300..800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=2">
+  <link rel="stylesheet" href="./style.css?v=3">
 </head>
 
 <body data-collection="all">
 
+  <!-- HEADER -->
   <header class="site-header" role="banner">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="fatmandoohstores home">
@@ -19,9 +20,14 @@
       </a>
 
       <nav class="nav" aria-label="Primary">
-        <button id="menuToggle" class="icon-btn" aria-expanded="false" aria-controls="mobileMenu" aria-label="Toggle menu">
-          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+        <!-- ☰ button -->
+        <button id="menuToggle" class="icon-btn" aria-expanded="false" aria-controls="desktopMenu" aria-label="Toggle menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </svg>
         </button>
+
+        <!-- Single unified menu -->
         <ul id="desktopMenu" class="menu">
           <li><a href="womens.html">Womens</a></li>
           <li><a href="mens.html">Mens</a></li>
@@ -32,19 +38,17 @@
 
       <div class="header-ctas">
         <button id="cartBtn" class="icon-btn" aria-label="Open Cart" data-cart-count="0">
-          <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h15l-1.5 9h-12L6 6Zm0 0L5 3H2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="9" cy="21" r="1.8"/><circle cx="18" cy="21" r="1.8"/></svg>
+          <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6h15l-1.5 9h-12L6 6Zm0 0L5 3H2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <circle cx="9" cy="21" r="1.8"/>
+            <circle cx="18" cy="21" r="1.8"/>
+          </svg>
         </button>
       </div>
     </div>
-
-    <div id="mobileMenu" class="mobile-menu" hidden>
-      <a href="womens.html">Womens</a>
-      <a href="mens.html">Mens</a>
-      <a href="discount.html" class="pill sale">Discount Sales</a>
-      <a href="login.html">Login / Signup</a>
-    </div>
   </header>
 
+  <!-- HERO -->
   <section class="hero">
     <div class="container hero-inner">
       <div class="hero-copy">
@@ -63,6 +67,7 @@
     </div>
   </section>
 
+  <!-- CATALOG -->
   <section id="catalog" class="catalog" aria-label="Product catalog">
     <div class="container">
       <div class="toolbar">
@@ -90,6 +95,7 @@
     </div>
   </section>
 
+  <!-- FOOTER -->
   <footer class="site-footer" role="contentinfo">
     <div class="container footer-inner">
       <div class="footer-brand">
@@ -107,13 +113,14 @@
     </div>
   </footer>
 
-
-  <!-- Cart Drawer -->
+  <!-- CART DRAWER -->
   <aside id="cartDrawer" class="cart-drawer" aria-hidden="true" aria-labelledby="cartTitle" role="dialog">
     <div class="cart-header">
       <h2 id="cartTitle">Your Cart</h2>
       <button id="closeCart" class="icon-btn" aria-label="Close Cart">
-        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
       </button>
     </div>
     <div id="cartItems" class="cart-items" tabindex="0"></div>
@@ -126,14 +133,16 @@
     </div>
   </aside>
 
-  <!-- Checkout Modal -->
+  <!-- CHECKOUT MODAL -->
   <div id="checkoutModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modalTitle">
     <div class="modal-backdrop" data-close></div>
     <div class="modal-panel" role="document">
       <div class="modal-header">
         <h3 id="modalTitle">Checkout (Demo)</h3>
         <button class="icon-btn" data-close aria-label="Close">
-          <svg width="24" height="24" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24">
+            <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </svg>
         </button>
       </div>
       <form id="checkoutForm" class="modal-body">
@@ -156,6 +165,6 @@
     </div>
   </div>
 
-  <script src="./script.js?v=2" defer></script>
+  <script src="./script.js?v=3" defer></script>
 </body>
 </html>

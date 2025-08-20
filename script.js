@@ -1,7 +1,5 @@
-
 // ======== fatmandoohstores Frontend (No backend; demo checkout) ========
 
-// Products (with collection + discount flags). TODO: Plug real images/prices.
 const PRODUCTS = [
   {id:'w_d1', title:'Crimson Cutout Dress', price: 32000, category:'dress', collection:'women', discount:false, img:'images/crimson1.jpg', badge:'NEW'},
   {id:'w_d2', title:'Emerald Slip Dress', price: 28000, category:'dress', collection:'women', discount:true, img:'images/emerald.jpg', badge:'SALE'},
@@ -15,13 +13,13 @@ const PRODUCTS = [
   {id:'w_t2', title:'Cropped Cardigan', price: 21000, category:'top', collection:'women', discount:false, img:'images/croppedc.jpg'}
 ];
 
-// --- Helpers
-const $ = (sel, root=document) => root.querySelector(sel);
-const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
-const fmt = (n) => new Intl.NumberFormat('en-NG', {style:'currency', currency:'NGN', maximumFractionDigits:0}).format(n);
+// Helpers
+const $  = (s, r=document)=> r.querySelector(s);
+const $$ = (s, r=document)=> Array.from(r.querySelectorAll(s));
+const fmt = n => new Intl.NumberFormat('en-NG',{style:'currency',currency:'NGN',maximumFractionDigits:0}).format(n);
 
-// --- Persistent cart
-let cart = JSON.parse(localStorage.getItem('fms_cart') || '{}'); // {id: qty}
+// Persistent cart
+let cart = JSON.parse(localStorage.getItem('fms_cart') || '{}');
 
 // Elements
 const grid = $('#productGrid');
@@ -37,15 +35,16 @@ const cartSubtotal = $('#cartSubtotal');
 const checkoutBtn = $('#checkoutBtn');
 const menuToggle = $('#menuToggle');
 const mobileMenu = $('#mobileMenu');
+const desktopMenu = $('#desktopMenu');
 const year = $('#year'); if (year) year.textContent = new Date().getFullYear();
 
-// Which collection is this page?
+// Page collection
 const initialCollection = document.body.getAttribute('data-collection') || 'all';
 
-// --- Render products with search/filter/sort and collection gating
+// Products render
 let visible = 8;
 function renderProducts(){
-  if(!grid) return; // e.g., auth page
+  if(!grid) return;
   grid.innerHTML = '';
   const term = (searchInput?.value || '').trim().toLowerCase();
   const cat = categoryFilter ? categoryFilter.value : 'all';
@@ -59,8 +58,7 @@ function renderProducts(){
   if (sortBy?.value === 'price-asc') items.sort((a,b)=>a.price-b.price);
   if (sortBy?.value === 'price-desc') items.sort((a,b)=>b.price-a.price);
 
-  const slice = items.slice(0, visible);
-  slice.forEach(p => {
+  items.slice(0, visible).forEach(p=>{
     const card = document.createElement('article');
     card.className = 'card';
     card.setAttribute('role','listitem');
@@ -91,25 +89,14 @@ function renderProducts(){
   if(loadMoreBtn) loadMoreBtn.style.display = items.length > visible ? 'inline-flex' : 'none';
 }
 
-// --- Cart helpers
-function cartCount(){
-  const count = Object.values(cart).reduce((a,b)=>a+b,0);
-  if (cartBtn) cartBtn.setAttribute('data-cart-count', count);
-}
-function cartTotal(){
-  let total = 0;
-  for(const [id, qty] of Object.entries(cart)){
-    const p = PRODUCTS.find(x=>x.id===id);
-    if (p) total += p.price * qty;
-  }
-  return total;
-}
+// Cart helpers
+function cartCount(){ const c = Object.values(cart).reduce((a,b)=>a+b,0); cartBtn?.setAttribute('data-cart-count', c); }
+function cartTotal(){ return Object.entries(cart).reduce((t,[id,qty])=>{ const p = PRODUCTS.find(x=>x.id===id); return t + (p? p.price*qty : 0); },0); }
 function renderCart(){
   if (!cartItems) return;
   cartItems.innerHTML = '';
   for(const [id, qty] of Object.entries(cart)){
-    const p = PRODUCTS.find(x=>x.id===id);
-    if(!p) continue;
+    const p = PRODUCTS.find(x=>x.id===id); if(!p) continue;
     const el = document.createElement('div');
     el.className = 'cart-item';
     el.innerHTML = `
@@ -128,23 +115,23 @@ function renderCart(){
     `;
     cartItems.appendChild(el);
   }
-  if (cartSubtotal) cartSubtotal.textContent = fmt(cartTotal());
+  cartSubtotal && (cartSubtotal.textContent = fmt(cartTotal()));
   cartCount();
   localStorage.setItem('fms_cart', JSON.stringify(cart));
 }
 
-// --- Delegated events
+// Global click delegation
 document.addEventListener('click', (e)=>{
-  // qty within any card
-  if (e.target.matches('[data-inc]')){
+  // qty controls in product cards
+  if (e.target.matches('[data-inc]')) {
     const display = e.target.previousElementSibling;
     display.textContent = String(parseInt(display.textContent,10)+1);
   }
-  if (e.target.matches('[data-dec]')){
+  if (e.target.matches('[data-dec]')) {
     const display = e.target.nextElementSibling;
     display.textContent = String(Math.max(1, parseInt(display.textContent,10)-1));
   }
-  if (e.target.matches('[data-add]')){
+  if (e.target.matches('[data-add]')) {
     const id = e.target.getAttribute('data-id');
     const qtyBtn = e.target.previousElementSibling.querySelector('button[disabled]');
     const qty = parseInt(qtyBtn.textContent,10) || 1;
@@ -153,7 +140,7 @@ document.addEventListener('click', (e)=>{
     openCart();
   }
 
-  // cart controls
+  // cart item controls
   if (e.target.hasAttribute('data-cart-inc')){
     const id = e.target.getAttribute('data-cart-inc');
     cart[id] = (cart[id]||1)+1; renderCart();
@@ -167,7 +154,7 @@ document.addEventListener('click', (e)=>{
     delete cart[id]; renderCart();
   }
 
-  // open/close cart buttons
+  // open/close cart
   if (e.target.closest('#cartBtn')) openCart();
   if (e.target.closest('#closeCart')) closeCartDrawer();
 
@@ -175,29 +162,44 @@ document.addEventListener('click', (e)=>{
   if (cartDrawer?.classList.contains('open') && !e.target.closest('#cartDrawer') && !e.target.closest('#cartBtn')){
     closeCartDrawer();
   }
+
+  // === MOBILE MENU TOGGLE (robust) ===
+  if (e.target.closest('#menuToggle')){
+    // prefer the dedicated #mobileMenu
+    if (mobileMenu){
+      const isOpen = !mobileMenu.hasAttribute('hidden');
+      if (isOpen) { mobileMenu.setAttribute('hidden',''); menuToggle?.setAttribute('aria-expanded','false'); }
+      else { mobileMenu.removeAttribute('hidden'); menuToggle?.setAttribute('aria-expanded','true'); }
+    }
+    // also toggle the desktop UL for setups that use .menu.show
+    if (desktopMenu){
+      desktopMenu.classList.toggle('show');
+    }
+  }
+
+  // Close menus when clicking outside any nav
+  if (!e.target.closest('.nav') && !e.target.closest('#mobileMenu') && !e.target.closest('#menuToggle')){
+    if (mobileMenu && !mobileMenu.hasAttribute('hidden')){
+      mobileMenu.setAttribute('hidden',''); menuToggle?.setAttribute('aria-expanded','false');
+    }
+    desktopMenu?.classList.remove('show');
+  }
 });
 
-// search/filter/sort
+// search/filter/sort events
 [searchInput, categoryFilter, sortBy].forEach(el=>{
   el && el.addEventListener('input', ()=>{ visible = 8; renderProducts(); });
   el && el.addEventListener('change', ()=>{ visible = 8; renderProducts(); });
 });
 loadMoreBtn && loadMoreBtn.addEventListener('click', ()=>{ visible += 8; renderProducts(); });
 
-// Drawer + focus
+// Drawer helpers
 function openCart(){ if(!cartDrawer) return; cartDrawer.classList.add('open'); cartDrawer.setAttribute('aria-hidden','false'); setTimeout(()=>cartItems?.focus(), 120); }
 function closeCartDrawer(){ if(!cartDrawer) return; cartDrawer.classList.remove('open'); cartDrawer.setAttribute('aria-hidden','true'); }
 
-// Mobile menu toggle
-menuToggle && menuToggle.addEventListener('click', ()=>{
-  const open = !mobileMenu.hasAttribute('hidden');
-  if (open){ mobileMenu.setAttribute('hidden',''); menuToggle.setAttribute('aria-expanded','false'); }
-  else { mobileMenu.removeAttribute('hidden'); menuToggle.setAttribute('aria-expanded','true'); }
-});
-
 // Checkout (fake)
-const checkoutModal = document.getElementById('checkoutModal');
-const checkoutForm = document.getElementById('checkoutForm');
+const checkoutModal = $('#checkoutModal');
+const checkoutForm = $('#checkoutForm');
 if (checkoutModal && checkoutForm){
   const modalBackdrop = checkoutModal.querySelector('.modal-backdrop');
   $$('[data-close]', checkoutModal).forEach(btn=>btn.addEventListener('click', ()=> toggleModal(false)));
@@ -215,12 +217,12 @@ if (checkoutModal && checkoutForm){
   function toggleModal(show){ checkoutModal.setAttribute('aria-hidden', show ? 'false' : 'true'); }
 }
 
-// Auth page tabs
-const tabLogin = document.getElementById('tab-login');
-const tabSignup = document.getElementById('tab-signup');
+// Auth tabs (if present)
+const tabLogin = $('#tab-login');
+const tabSignup = $('#tab-signup');
 if (tabLogin && tabSignup){
-  const panelLogin = document.getElementById('panel-login');
-  const panelSignup = document.getElementById('panel-signup');
+  const panelLogin = $('#panel-login');
+  const panelSignup = $('#panel-signup');
   const activate = (which) => {
     const loginActive = which === 'login';
     tabLogin.classList.toggle('active', loginActive);
@@ -232,9 +234,17 @@ if (tabLogin && tabSignup){
   };
   tabLogin.addEventListener('click', ()=>activate('login'));
   tabSignup.addEventListener('click', ()=>activate('signup'));
-  
 }
 
 // Boot
 renderProducts();
 renderCart();
+
+// Optional: close mobile menu on resize to desktop
+window.addEventListener('resize', ()=>{
+  if (window.innerWidth > 900){
+    mobileMenu?.setAttribute('hidden','');
+    menuToggle?.setAttribute('aria-expanded','false');
+    desktopMenu?.classList.remove('show');
+  }
+});
