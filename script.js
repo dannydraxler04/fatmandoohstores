@@ -1,5 +1,3 @@
-// ======== fatmandoohstores Frontend (No backend; demo checkout) ========
-
 const PRODUCTS = [
   {id:'w_d1', title:'Crimson Cutout Dress', price: 32000, category:'dress', collection:'women', discount:false, img:'images/crimson1.jpg', badge:'NEW'},
   {id:'w_d2', title:'Emerald Slip Dress', price: 28000, category:'dress', collection:'women', discount:true, img:'images/emerald.jpg', badge:'SALE'},
@@ -13,15 +11,12 @@ const PRODUCTS = [
   {id:'w_t2', title:'Cropped Cardigan', price: 21000, category:'top', collection:'women', discount:false, img:'images/croppedc.jpg'}
 ];
 
-// Helpers
 const $  = (s, r=document)=> r.querySelector(s);
 const $$ = (s, r=document)=> Array.from(r.querySelectorAll(s));
 const fmt = n => new Intl.NumberFormat('en-NG',{style:'currency',currency:'NGN',maximumFractionDigits:0}).format(n);
 
-// Persistent cart
 let cart = JSON.parse(localStorage.getItem('fms_cart') || '{}');
 
-// Elements
 const grid = $('#productGrid');
 const categoryFilter = $('#categoryFilter');
 const sortBy = $('#sortBy');
@@ -38,10 +33,8 @@ const mobileMenu = $('#mobileMenu');
 const desktopMenu = $('#desktopMenu');
 const year = $('#year'); if (year) year.textContent = new Date().getFullYear();
 
-// Page collection
 const initialCollection = document.body.getAttribute('data-collection') || 'all';
 
-// Products render
 let visible = 8;
 function renderProducts(){
   if(!grid) return;
@@ -89,7 +82,6 @@ function renderProducts(){
   if(loadMoreBtn) loadMoreBtn.style.display = items.length > visible ? 'inline-flex' : 'none';
 }
 
-// Cart helpers
 function cartCount(){ const c = Object.values(cart).reduce((a,b)=>a+b,0); cartBtn?.setAttribute('data-cart-count', c); }
 function cartTotal(){ return Object.entries(cart).reduce((t,[id,qty])=>{ const p = PRODUCTS.find(x=>x.id===id); return t + (p? p.price*qty : 0); },0); }
 function renderCart(){
@@ -120,9 +112,7 @@ function renderCart(){
   localStorage.setItem('fms_cart', JSON.stringify(cart));
 }
 
-// Global click delegation
 document.addEventListener('click', (e)=>{
-  // qty controls in product cards
   if (e.target.matches('[data-inc]')) {
     const display = e.target.previousElementSibling;
     display.textContent = String(parseInt(display.textContent,10)+1);
@@ -140,7 +130,6 @@ document.addEventListener('click', (e)=>{
     openCart();
   }
 
-  // cart item controls
   if (e.target.hasAttribute('data-cart-inc')){
     const id = e.target.getAttribute('data-cart-inc');
     cart[id] = (cart[id]||1)+1; renderCart();
@@ -154,30 +143,24 @@ document.addEventListener('click', (e)=>{
     delete cart[id]; renderCart();
   }
 
-  // open/close cart
   if (e.target.closest('#cartBtn')) openCart();
   if (e.target.closest('#closeCart')) closeCartDrawer();
 
-  // close drawer clicking outside
   if (cartDrawer?.classList.contains('open') && !e.target.closest('#cartDrawer') && !e.target.closest('#cartBtn')){
     closeCartDrawer();
   }
 
-  // === MOBILE MENU TOGGLE (robust) ===
   if (e.target.closest('#menuToggle')){
-    // prefer the dedicated #mobileMenu
     if (mobileMenu){
       const isOpen = !mobileMenu.hasAttribute('hidden');
       if (isOpen) { mobileMenu.setAttribute('hidden',''); menuToggle?.setAttribute('aria-expanded','false'); }
       else { mobileMenu.removeAttribute('hidden'); menuToggle?.setAttribute('aria-expanded','true'); }
     }
-    // also toggle the desktop UL for setups that use .menu.show
     if (desktopMenu){
       desktopMenu.classList.toggle('show');
     }
   }
 
-  // Close menus when clicking outside any nav
   if (!e.target.closest('.nav') && !e.target.closest('#mobileMenu') && !e.target.closest('#menuToggle')){
     if (mobileMenu && !mobileMenu.hasAttribute('hidden')){
       mobileMenu.setAttribute('hidden',''); menuToggle?.setAttribute('aria-expanded','false');
@@ -186,18 +169,15 @@ document.addEventListener('click', (e)=>{
   }
 });
 
-// search/filter/sort events
 [searchInput, categoryFilter, sortBy].forEach(el=>{
   el && el.addEventListener('input', ()=>{ visible = 8; renderProducts(); });
   el && el.addEventListener('change', ()=>{ visible = 8; renderProducts(); });
 });
 loadMoreBtn && loadMoreBtn.addEventListener('click', ()=>{ visible += 8; renderProducts(); });
 
-// Drawer helpers
 function openCart(){ if(!cartDrawer) return; cartDrawer.classList.add('open'); cartDrawer.setAttribute('aria-hidden','false'); setTimeout(()=>cartItems?.focus(), 120); }
 function closeCartDrawer(){ if(!cartDrawer) return; cartDrawer.classList.remove('open'); cartDrawer.setAttribute('aria-hidden','true'); }
 
-// Checkout (fake)
 const checkoutModal = $('#checkoutModal');
 const checkoutForm = $('#checkoutForm');
 if (checkoutModal && checkoutForm){
@@ -217,7 +197,6 @@ if (checkoutModal && checkoutForm){
   function toggleModal(show){ checkoutModal.setAttribute('aria-hidden', show ? 'false' : 'true'); }
 }
 
-// Auth tabs (if present)
 const tabLogin = $('#tab-login');
 const tabSignup = $('#tab-signup');
 if (tabLogin && tabSignup){
@@ -236,11 +215,9 @@ if (tabLogin && tabSignup){
   tabSignup.addEventListener('click', ()=>activate('signup'));
 }
 
-// Boot
 renderProducts();
 renderCart();
 
-// Optional: close mobile menu on resize to desktop
 window.addEventListener('resize', ()=>{
   if (window.innerWidth > 900){
     mobileMenu?.setAttribute('hidden','');

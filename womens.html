@@ -1,17 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-collection="women">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>fatmandoohstores — Bold Fashion</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300..800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=2">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Women - fatmandoohstores</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body data-collection="women">
 
+  <!-- Header -->
   <header class="site-header" role="banner">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="fatmandoohstores home">
@@ -19,9 +16,14 @@
       </a>
 
       <nav class="nav" aria-label="Primary">
+        <!-- Hamburger toggle (mobile) -->
         <button id="menuToggle" class="icon-btn" aria-expanded="false" aria-controls="mobileMenu" aria-label="Toggle menu">
-          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </svg>
         </button>
+
+        <!-- Desktop menu -->
         <ul id="desktopMenu" class="menu">
           <li><a href="womens.html">Womens</a></li>
           <li><a href="mens.html">Mens</a></li>
@@ -32,116 +34,95 @@
 
       <div class="header-ctas">
         <button id="cartBtn" class="icon-btn" aria-label="Open Cart" data-cart-count="0">
-          <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h15l-1.5 9h-12L6 6Zm0 0L5 3H2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="9" cy="21" r="1.8"/><circle cx="18" cy="21" r="1.8"/></svg>
+          <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6h15l-1.5 9h-12L6 6Zm0 0L5 3H2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <circle cx="9" cy="21" r="1.8"/>
+            <circle cx="18" cy="21" r="1.8"/>
+          </svg>
         </button>
       </div>
     </div>
 
-    <div id="mobileMenu" class="mobile-menu" hidden>
-      <a href="womens.html">Womens</a>
-      <a href="mens.html">Mens</a>
-      <a href="discount.html" class="pill sale">Discount Sales</a>
-      <a href="login.html">Login / Signup</a>
-    </div>
-  </header>
+    <!-- Mobile menu (hidden by default, JS toggles it) -->
 
-  <section class="hero">
-    <div class="container hero-inner">
-      <div class="hero-copy">
-        <h1>Womens — <span class="text-gradient">statement</span> looks.</h1>
-        <p>Dresses, tops and accessories designed to stand out.</p>
-      </div>
-      <div class="hero-media" aria-hidden="true">
-        <div class="hero-card h1"></div>
-        <div class="hero-card h2"></div>
-        <div class="hero-card h3"></div>
-      </div>
-    </div>
-  </section>
-  <section id="catalog" class="catalog">
+
+  <!-- Catalog -->
+  <main class="catalog">
     <div class="container">
       <div class="toolbar">
-        <div class="search"><input id="searchInput" type="search" placeholder="Search womenswear…" aria-label="Search products"/></div>
+        <div class="search">
+          <input type="search" id="searchInput" placeholder="Search products..." aria-label="Search products">
+        </div>
         <div class="filters">
-          <select id="categoryFilter" aria-label="Filter by category">
-            <option value="all">All</option><option value="dress">Dress</option><option value="top">Top</option><option value="bag">Bag</option><option value="shoe">Shoe</option>
+          <select id="categoryFilter" aria-label="Filter category">
+            <option value="all">All</option>
+            <option value="dress">Dresses</option>
+            <option value="top">Tops</option>
+            <option value="shoe">Shoes</option>
+            <option value="bag">Bags</option>
           </select>
           <select id="sortBy" aria-label="Sort products">
-            <option value="new">Newest</option><option value="price-asc">Price: Low → High</option><option value="price-desc">Price: High → Low</option>
+            <option value="new">Newest</option>
+            <option value="price-asc">Price: Low → High</option>
+            <option value="price-desc">Price: High → Low</option>
           </select>
         </div>
       </div>
-      <div id="productGrid" class="grid" role="list"></div>
-      <div class="center"><button id="loadMore" class="btn btn-ghost">Load more</button></div>
-    </div>
-  </section>
 
-  <footer class="site-footer" role="contentinfo">
+      <!-- Product Grid -->
+      <section id="productGrid" class="grid" role="list"></section>
+      <div class="center"><button id="loadMore" class="btn btn-ghost">Load More</button></div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
     <div class="container footer-inner">
-      <div class="footer-brand">
-        <span class="logo-dot"></span>
-        <span class="logo-text">fatmandoohstores</span>
-        <p class="sub">A bold & trendy fashion experience.</p>
-      </div>
       <div class="footer-links">
         <a href="#">About</a>
         <a href="#">Contact</a>
-        <a href="#">Shipping</a>
-        <a href="#">Returns</a>
+        <a href="#">Help</a>
       </div>
-      <p class="copy">© <span id="year"></span> fatmandoohstores. All rights reserved.</p>
+      <p class="sub">&copy; <span id="year"></span> fatmandoohstores. All rights reserved.</p>
     </div>
   </footer>
 
-
   <!-- Cart Drawer -->
-  <aside id="cartDrawer" class="cart-drawer" aria-hidden="true" aria-labelledby="cartTitle" role="dialog">
+  <aside id="cartDrawer" class="cart-drawer" aria-hidden="true">
     <div class="cart-header">
-      <h2 id="cartTitle">Your Cart</h2>
-      <button id="closeCart" class="icon-btn" aria-label="Close Cart">
-        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
-      </button>
+      <h2>Your Cart</h2>
+      <button id="closeCart" class="icon-btn" aria-label="Close Cart">×</button>
     </div>
-    <div id="cartItems" class="cart-items" tabindex="0"></div>
+    <div id="cartItems" class="cart-items"></div>
     <div class="cart-footer">
-      <div class="totals">
-        <span>Subtotal</span>
-        <strong id="cartSubtotal">₦0</strong>
-      </div>
+      <div class="totals"><span>Subtotal</span><span id="cartSubtotal">₦0</span></div>
       <button id="checkoutBtn" class="btn btn-primary">Fake Checkout</button>
     </div>
   </aside>
 
   <!-- Checkout Modal -->
-  <div id="checkoutModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modalTitle">
-    <div class="modal-backdrop" data-close></div>
-    <div class="modal-panel" role="document">
+  <div id="checkoutModal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-panel">
       <div class="modal-header">
-        <h3 id="modalTitle">Checkout (Demo)</h3>
-        <button class="icon-btn" data-close aria-label="Close">
-          <svg width="24" height="24" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
-        </button>
+        <h3>Checkout</h3>
+        <button data-close class="icon-btn" aria-label="Close checkout">×</button>
       </div>
       <form id="checkoutForm" class="modal-body">
-        <label>Full Name <input type="text" name="name" required autocomplete="name" placeholder="Jane Doe"/></label>
-        <label>Email <input type="email" name="email" required autocomplete="email" placeholder="jane@example.com"/></label>
-        <label>Address <input type="text" name="address" required autocomplete="street-address" placeholder="123 Market St"/></label>
-        <label>City <input type="text" name="city" required placeholder="Lagos"/></label>
-        <label>Payment Method
-          <select name="payment" required>
-            <option value="card">Card (Demo)</option>
-            <option value="transfer">Bank Transfer (Demo)</option>
-            <option value="cod">Cash on Delivery (Demo)</option>
-          </select>
-        </label>
-        <button type="submit" class="btn btn-primary">Place Order (Demo)</button>
+        <label>Name<input type="text" name="name" required></label>
+        <label>Email<input type="email" name="email" required></label>
+        <label>Address<input type="text" name="address" required></label>
+        <label>City<input type="text" name="city" required></label>
+        <label>Payment<select name="payment" required>
+          <option value="card">Card</option>
+          <option value="bank">Bank Transfer</option>
+        </select></label>
+        <button type="submit" class="btn btn-primary">Place Order</button>
       </form>
-      <div class="modal-footer">
-        <p>This is a demo checkout. No real payments are processed.</p>
-      </div>
+      <div class="modal-footer">Demo only. No payment captured.</div>
     </div>
   </div>
 
-  <script src="./script.js?v=2" defer></script>
+  <script src="script.js"></script>
 </body>
 </html>
